@@ -1,31 +1,53 @@
-// BEGIN Меню для навигации при разработке
-//**************
-// should be commented before production
-//**************
+// original site
+// https://inculerate.com/
+// video
+// https://www.youtube.com/watch?v=8DH13eslS3U
 
-$(document).ready(function ($) {
-  pageWidget([
-    'index',
-    'inner'
-    ]);
+
+//begin инициализируем pixi-контейнер canvas
+const app = new PIXI.Application({
+  width: window.innerWidth,
+  height: window.innerHeight,
+  backgroundColor: 0x1099bb,
+  resolution: window.devicePixelRatio || 1
 });
 
-function pageWidget(pages) {
-  var widgetWrap = $('<div class="widget_wrap"><ul class="widget_list"></ul></div>');
-  widgetWrap.prependTo("body");
-  for (var i = 0; i < pages.length; i++) {
-    $('<li class="widget_item"><a class="widget_link" href="'
-      + pages[i]
-      + '.html'
-      + '">'
-      + pages[i]
-      + '</a></li>').appendTo('.widget_list');
-  }
-  var widgetStilization = $('<style>body {position:relative} .widget_wrap{position:fixed;top:0;left:0;z-index:19999;padding:10px 20px;background:#222;border-bottom-right-radius:10px;-webkit-transition:all .3s ease;transition:all .3s ease;-webkit-transform:translate(-100%,0);-ms-transform:translate(-100%,0);transform:translate(-100%,0)}.widget_wrap:after{content:" ";position:absolute;top:0;left:100%;width:24px;height:24px;background:#222 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAABGdBTUEAALGPC/xhBQAAAAxQTFRF////////AAAA////BQBkwgAAAAN0Uk5TxMMAjAd+zwAAACNJREFUCNdjqP///y/DfyBg+LVq1Xoo8W8/CkFYAmwA0Kg/AFcANT5fe7l4AAAAAElFTkSuQmCC) no-repeat 50% 50%;cursor:pointer}.widget_wrap:hover{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);transform:translate(0,0)}.widget_item{padding:0 0 10px}.widget_link{color:#fff;text-decoration:none;font-size:15px;}.widget_link:hover{text-decoration:underline} </style>');
-  widgetStilization.prependTo(".widget_wrap");
-}
+app.width = window.innerWidth;
+app.height = window.innerHeight;
 
-// END Меню для навигации при разработке
+document.body.appendChild(app.view);
+//end инициализируем pixi-контейнер canvas
 
 
-//====== Begin Programmer code ======
+const container = new PIXI.Container();
+app.stage.addChild(container);
+
+
+// Create a new texture
+const bg = new PIXI.Sprite.from('assets/img/bg.jpg');
+bg.width = app.screen.width;
+bg.height = app.screen.height;
+
+container.addChild(bg);
+
+
+// Create a new text
+const basicText = new PIXI.Text('Odinokun`s test pixi.js', {
+  fontFamily: 'Arial Narrow',
+  fontSize: 120,
+  fontWeight: 'bold',
+  fill: '#ffffff',
+  wordWrap: true,
+  wordWrapWidth: 600
+});
+basicText.x = 30;
+basicText.y = 90;
+
+container.addChild(basicText);
+
+
+// Listen for animate update
+app.ticker.add((delta) => {
+  // рендерим контейнер с фоном
+  app.renderer.render(container);
+});
